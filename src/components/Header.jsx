@@ -18,7 +18,7 @@ export default function Header() {
       <div className="container nav-wrap">
         <Link to="/" className="logo" onClick={() => setOpen(false)}>
           <span className="logo-mark"><Network size={19} /></span>
-          <span>AQUAMAX<span className="logo-sub">BEVERAGE DISTRIBUTION</span></span>
+          <span>BEVERAGES<span className="logo-sub">BEVERAGE DISTRIBUTION</span></span>
         </Link>
         <button className="mobile-toggle" aria-label="Toggle navigation" onClick={() => setOpen(!open)}>
           {open ? <X /> : <Menu />}
