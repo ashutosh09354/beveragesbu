@@ -1,15 +1,23 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import PageHero from "../components/PageHero";
 import PartnershipCTA from "../components/PartnershipCTA";
 import indiaOutline from "../assets/india-outline.svg";
+import { stats } from "../data";
 
-const truckImage = "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=85";
+const img = "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1800&q=85";
+const regions = ["North India", "West India", "East India", "South India"];
 
 export default function Network() {
-  const regions = ["North India","West India","South India","East & Central India"];
   return <>
-    <PageHero eyebrow="OUR NETWORK / 04" title={<>Connected by<br />distribution.</>} text="A scalable network concept for a business serving customers across diverse Indian markets." image={truckImage} />
-    <section className="section"><div className="container network-page-grid"><div><span className="eyebrow">A NATIONAL PERSPECTIVE</span><h2>One network.<br />Many markets.</h2><p className="muted-copy">Use this section to show active service areas, regional teams, depots, and warehouses. Do not publish illustrative locations as operational facts.</p><div className="region-list">{regions.map((region,index)=><div key={region}><span>0{index+1}</span><b>{region}</b><span className="region-status">Coverage data required</span></div>)}</div></div><div className="network-map-large"><div className="map-grid" /><img className="india-map" src={indiaOutline} alt="Outline map of India" /><span className="map-legend"><i/> Illustrative network visualization</span></div></div></section>
+    <PageHero eyebrow="Distribution network" title="Our Pan-India Presence" text="A growing network to serve businesses across India, ensuring wide availability and reliable supply." image={img} />
+    <section className="section"><div className="container net-grid">
+      <div className="card map-card"><img src={indiaOutline} alt="Outline map of India" /></div>
+      <div className="stat-list">{stats.map(([v, l]) => <div className="card" key={l}><b>{v}</b><small>{l}</small></div>)}</div>
+    </div></section>
+    <section className="section tight"><div className="container"><div className="sec-head"><h2>Key Regions</h2></div>
+      <div className="region-grid">{regions.map(r => <Link to="/contact" className="region" key={r}><span>{r}</span><ArrowRight size={16} /></Link>)}</div></div></section>
     <PartnershipCTA />
   </>;
 }

@@ -1,14 +1,18 @@
 import React from "react";
+import { Target, Eye, Users } from "lucide-react";
 import PageHero from "../components/PageHero";
 import PartnershipCTA from "../components/PartnershipCTA";
 
-const warehouseImage = "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1400&q=85";
+const img = "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1800&q=85";
+const pillars = [[Target, "Our Mission", "To deliver leading beverage brands to every corner of India with reliability and excellence."], [Eye, "Our Vision", "To be the most trusted and preferred beverage distribution partner in the country."], [Users, "Our Values", "Integrity, reliability, customer focus and sustainable growth."]];
+const journey = [["Foundation", "Started with a vision to build a strong distribution network."], ["Expansion", "Extended operations across multiple states in India."], ["Partnerships", "Collaborated with leading beverage manufacturers and brands."], ["Growth", "Continuing to strengthen our network and services across new markets."]];
 
 export default function About() {
   return <>
-    <PageHero eyebrow="ABOUT AQUAMAX / 02" title={<>A partner in the<br />journey to market.</>} text="A corporate identity concept for a beverage distribution business connecting products, partners, and markets." image={warehouseImage} />
-    <section className="section"><div className="container story-grid"><div><span className="eyebrow">OUR POINT OF VIEW</span><h2>Distribution is the connection between a great product and its market.</h2></div><div><p className="large-copy">We bring a business-first perspective to beverage distribution: thoughtful coordination, strong commercial relationships, and an operational approach designed around the needs of customers and partners.</p><p className="muted-copy">This is placeholder company copy. Replace it with your real company history, capabilities, and approved corporate messaging.</p></div></div></section>
-    <section className="values-band"><div className="container values-grid"><div><span>01</span><h3>Commercial focus</h3><p>Understand the needs of each market and customer.</p></div><div><span>02</span><h3>Operational discipline</h3><p>Coordinate the details that keep products moving.</p></div><div><span>03</span><h3>Long-term partnerships</h3><p>Build relationships that support sustainable business.</p></div></div></section>
+    <PageHero eyebrow="About us" title="A Trusted Partner in Beverage Distribution" text="We connect leading beverage brands with businesses across India through a strong distribution network, efficient operations and a commitment to quality and service." image={img} />
+    <section className="section"><div className="container card-trio">{pillars.map(([Icon, t, d]) => <div className="card icon-card" key={t}><Icon size={30} strokeWidth={1.5} /><div><h3>{t}</h3><p>{d}</p></div></div>)}</div></section>
+    <section className="section tight"><div className="container"><div className="sec-head"><h2>Our Journey</h2></div>
+      <ol className="journey">{journey.map(([t, d], i) => <li className="card" key={t}><b>{String(i + 1).padStart(2, "0")}</b><h3>{t}</h3><p>{d}</p></li>)}</ol></div></section>
     <PartnershipCTA />
   </>;
 }

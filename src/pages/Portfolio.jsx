@@ -1,30 +1,38 @@
 import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, ArrowUpRight, ShieldCheck, Sparkles, SlidersHorizontal, PackageCheck } from "lucide-react";
-import { categories, products } from "../data";
+import { Search, ArrowRight } from "lucide-react";
+import { categories, products, brands } from "../data";
 import PageHero from "../components/PageHero";
+import Bottle from "../components/Bottle";
 import PartnershipCTA from "../components/PartnershipCTA";
+import bottles from "../assets/coldrinkbottle.png";
 
-const pageImage = "https://images.unsplash.com/photo-1532634896-26909d0d4b0b?auto=format&fit=crop&w=2000&q=85";
+export function ProductCard({ p }) {
+  return <Link to={`/portfolio/${p.slug}`} className="p-card"><div className="p-art"><Bottle shape={p.shape} color={p.color} abbr={p.abbr} /></div><h3>{p.name}</h3><small>{p.category}</small><small>{p.sizes}</small><span className="text-link">View Details <ArrowRight size={14} /></span></Link>;
+}
 
 export default function Portfolio() {
-  const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState("All Products");
+  const [brand, setBrand] = useState("All Brands");
   const [query, setQuery] = useState("");
-  const filters = ["All", ...categories.map(item => item.name)];
-  const filtered = useMemo(() => products.filter(product =>
-    (category === "All" || product.category === category) &&
-    `${product.name} ${product.brand} ${product.category}`.toLowerCase().includes(query.toLowerCase())
-  ), [category, query]);
-  const displayedProducts = filtered.slice(0, 1);
+  const list = useMemo(() => products.filter(p => (category === "All Products" || p.category === category) && (brand === "All Brands" || p.brand === brand) && `${p.name} ${p.category}`.toLowerCase().includes(query.toLowerCase())), [category, brand, query]);
+  const Side = ({ title, items, value, set }) => <div className="side-group"><h4>{title}</h4>{items.map(i => <button key={i} className={value === i ? "on" : ""} onClick={() => set(i)}>{i}</button>)}</div>;
 
   return <>
-    <PageHero eyebrow="PRODUCTS / 01" title={<>Refreshment for every<br /><em>kind of moment.</em></>} text="A considered selection of beverages, pack formats, and categories designed to move with the needs of every market." image={pageImage} />
-    <section className="section products-catalog"><div className="container">
-      <div className="catalog-heading"><div><span className="eyebrow"><Sparkles size={13} /> DISCOVER THE RANGE</span><h2>Made for the shelf.<br /><em>Chosen for the moment.</em></h2></div><p>From everyday favourites to high-energy occasions, explore a flexible beverage range built around what customers reach for next.</p></div>
-      <div className="catalog-panel"><div className="catalog-tools"><label className="searchbox"><Search size={18} /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Find a product or category" /></label><span className="result-count"><PackageCheck size={15} /> {displayedProducts.length} sample product</span></div>
-      <div className="filter-row"><span className="filter-label"><SlidersHorizontal size={14} /> Browse by</span>{filters.map(item => <button key={item} onClick={() => setCategory(item)} className={`filter-chip ${category === item ? "selected" : ""}`}>{item}</button>)}</div></div>
-      {displayedProducts.length ? <div className="product-grid">{displayedProducts.map((product, index) => <article className="product-card" key={product.name}><div className="product-image"><img src={product.image} alt={product.name} loading="lazy" /><span className="product-no">{String(index + 1).padStart(2, "0")}</span><span className="product-category image-category">{product.category}</span></div><div className="product-body"><span className="product-kicker">AVAILABLE IN SELECT PACKS</span><h3>{product.name}</h3><p>{product.brand}</p><div className="product-bottom"><span>{product.pack}</span><Link to="/contact" aria-label={`Enquire about ${product.name}`}><ArrowUpRight size={18} /></Link></div></div></article>)}</div> : <div className="empty-products"><Search size={24} /><h3>No products found</h3><p>Try a different search or return to the full range.</p><button className="btn btn-primary" onClick={() => { setQuery(""); setCategory("All"); }}>Show all products</button></div>}
-      <div className="catalog-note"><ShieldCheck size={18} /><p>Our product range is tailored to individual markets. Speak with our team to confirm local availability, pack sizes, and partnership opportunities.</p></div>
-    </div></section><PartnershipCTA />
+    <PageHero eyebrow="Our portfolio" title="A Wide Range of Beverage Brands" text="From leading manufacturers to emerging brands, we deliver quality beverages across India." image={bottles} />
+    <section className="section"><div className="container">
+      <div className="filter-bar">
+        <label className="searchbox"><Search size={16} /><input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search products, brands or categories…" /></label>
+        <select value={category} onChange={e => setCategory(e.target.value)} aria-label="Category">{["All Products", ...categories.map(c => c.name)].map(c => <option key={c}>{c}</option>)}</select>
+        <select value={brand} onChange={e => setBrand(e.target.value)} aria-label="Brand">{["All Brands", ...brands].map(b => <option key={b}>{b}</option>)}</select>
+      </div>
+      <div className="catalog">
+        <aside className="side"><Side title="Categories" items={["All Products", ...categories.map(c => c.name)]} value={category} set={setCategory} /><Side title="Brands" items={["All Brands", ...brands]} value={brand} set={setBrand} /></aside>
+        {list.length ? <div className="p-grid">{list.map(p => <ProductCard key={p.slug} p={p} />)}</div>
+          : <div className="empty"><h3>No products found</h3><p>Try a different search, or clear the filters.</p><button className="btn btn-primary" onClick={() => { setQuery(""); setCategory("All Products"); setBrand("All Brands"); }}>Show all products</button></div>}
+      </div>
+      <p className="note">Range varies by market. Speak with our team to confirm local availability and pack sizes.</p>
+    </div></section>
+    <PartnershipCTA />
   </>;
 }

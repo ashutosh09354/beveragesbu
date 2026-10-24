@@ -1,16 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { categories } from "../data";
-import SectionIntro from "./SectionIntro";
+import Bottle from "./Bottle";
 
 export default function PortfolioTeaser() {
-  return (
-    <section className="section portfolio-section"><div className="container">
-      <SectionIntro eyebrow="01 / THE PORTFOLIO" title={<>A varied world<br />of beverages.</>} text="A multi-brand approach designed to support the needs of different channels, occasions, and markets." link="Explore all categories" />
-      <div className="category-grid">{categories.map((category, index) => <Link to="/portfolio" className={`category-card category-${index + 1}`} key={category.name}>
-        <img src={category.image} alt={category.name} loading="lazy" /><span className="category-number">{category.count}</span><div className="category-overlay" /><div className="category-info"><span>{category.short}</span><h3>{category.name}</h3><ArrowUpRight size={19} /></div>
-      </Link>)}</div>
-    </div></section>
-  );
+  return <section className="section"><div className="container">
+    <div className="sec-head"><h2>Our Beverage Portfolio</h2><Link to="/portfolio" className="text-link">View all products <ArrowRight size={15} /></Link></div>
+    <div className="cat-grid">{categories.map(c => <Link to="/portfolio" className="cat-tile" key={c.name}>
+      <div className="cat-art">{c.shapes.map((s, i) => <Bottle key={i} shape={s} color={c.colors[i]} />)}</div>
+      <span>{c.short}</span><i><ArrowRight size={15} /></i>
+    </Link>)}</div>
+  </div></section>;
 }

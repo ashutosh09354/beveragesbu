@@ -1,4 +1,4 @@
-# AquaMax Beverage Distribution — Frontend Demo
+# Beverages Distribution — Frontend Demo
 
 A premium React/Vite frontend concept for a multi-brand beverage distribution company.
 
@@ -18,4 +18,4 @@ A premium React/Vite frontend concept for a multi-brand beverage distribution co
 - Responsive navigation and custom styling
 
 ## Important before publishing
-AquaMax is a placeholder brand identity. Product names, photos, manufacturer relationships, contact details, revenue, service regions, and operational claims must be verified and replaced with approved company information. Images are loaded from Unsplash URLs and require internet access. The enquiry form does not send or store submissions. This project has no backend, authentication, database, or live inventory.
+Beverages is a placeholder brand identity. Product names, photos, manufacturer relationships, contact details, revenue, service regions, and operational claims must be verified and replaced with approved company information. Images are loaded from Unsplash URLs and require internet access. The enquiry form does not send or store submissions. This project has no backend, authentication, database, or live inventory.
