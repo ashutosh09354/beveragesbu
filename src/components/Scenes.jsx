@@ -16,8 +16,7 @@ const Truck = ({ x, y, s = 1, flip }) => (
     <ellipse cx="190" cy="152" rx="210" ry="12" fill="#0b1e44" opacity=".22" />
     <rect x="0" y="0" width="270" height="132" rx="8" fill="#fff" />
     <rect x="0" y="96" width="270" height="9" fill="#e11d2e" /><rect x="0" y="105" width="270" height="9" fill="#f58220" /><rect x="0" y="114" width="270" height="9" fill="#12974a" />
-    <text x={flip ? -135 : 135} y="62" textAnchor="middle" transform={flip ? "scale(-1 1)" : undefined} fontFamily="Arial Black,Arial,sans-serif" fontWeight="900" fontSize="46" fill="#e11d2e">XYZ</text>
-    <text x={flip ? -135 : 135} y="82" textAnchor="middle" transform={flip ? "scale(-1 1)" : undefined} fontFamily="Arial,sans-serif" fontWeight="700" fontSize="12" letterSpacing="5" fill="#14231d">BEVERAGES</text>
+    <text x={flip ? -135 : 135} y="86" textAnchor="middle" transform={flip ? "scale(-1 1)" : undefined} fontFamily="Arial Black,Arial,sans-serif" fontWeight="900" fontSize="20" letterSpacing="3" fill="#14231d">BEVERAGES</text>
     <path d="M276 30h58l36 40v62H276z" fill="#f4f6fa" /><path d="M290 42h38l24 28h-62z" fill="#9fc4e8" />
     <rect x="276" y="104" width="94" height="10" fill="#1b2b52" /><rect x="268" y="128" width="108" height="8" fill="#222" />
     {[50, 120, 300, 340].map(c => <g key={c}><circle cx={c} cy="140" r="19" fill="#151a26" /><circle cx={c} cy="140" r="8" fill="#b9c0cc" /></g>)}
@@ -41,11 +40,11 @@ export function HeroScene() {
       <g className="h-hero-clouds" fill="#fff" opacity=".82"><g className="h-cloud-one"><ellipse cx="260" cy="90" rx="110" ry="26" /><ellipse cx="340" cy="76" rx="70" ry="24" /></g><g className="h-cloud-two"><ellipse cx="1130" cy="120" rx="130" ry="28" /><ellipse cx="1210" cy="102" rx="80" ry="24" /></g><ellipse cx="720" cy="60" rx="90" ry="20" /></g>
       <Building x={-20} w={240} h={230} fill="#aab6c8" /><Building x={200} w={170} h={170} fill="#c3ccda" />
       <Building x={1070} w={190} h={190} fill="#c3ccda" /><Building x={1240} w={240} h={250} fill="#aab6c8" />
-      <rect y="470" width="1440" height="170" fill="url(#road)" />
-      <path d="M0 540h1440" stroke="#fff" strokeWidth="2" opacity=".18" />
+      <rect y="430" width="1440" height="210" fill="url(#road)" />
+      <path d="M0 500h1440" stroke="#fff" strokeWidth="2" opacity=".18" />
       <g className="h-road-streaks" fill="none" strokeLinecap="round"><path d="M170 590h100M760 610h150M1090 585h70M450 575h50" stroke="#fff" strokeWidth="3" opacity=".42"/><path d="M360 625h80M980 620h120M80 610h45" stroke="#dcecff" strokeWidth="2" opacity=".5"/></g>
-      <g className="h-truck h-truck-left"><Truck x={0} y={330} s={.86} /></g>
-      <g className="h-truck h-truck-right"><Truck x={0} y={330} s={.86} flip /></g>
+      <g className="h-truck h-truck-left"><Truck x={0} y={325} s={.72} /></g>
+      <g className="h-truck h-truck-right"><Truck x={0} y={465} s={.72} flip /></g>
     </svg>
   );
 }

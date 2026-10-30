@@ -16,12 +16,16 @@ const aboutIcons = [ShieldCheck, NetIcon, Settings, Handshake];
 const whyIcons = [Gem, Truck, Boxes, Headset];
 const procIcons = [Search, Warehouse, Truck, Store];
 const statLabels = [["28+", "States Served", "(Pan-India)"], ["100+", "Distribution Partners", ""], ["15+", "Warehouse Locations", ""]];
+// Keep route vertices tied to mapPins so every visible connection terminates at a location marker.
+const mapRouteGroups = [
+  [0, 1, 2, 3, 4, 7, 8, 11, 12, 13],
+  [1, 6, 5, 9, 10, 11],
+];
 const heroProducts = [
   { src: "/cocaCola.png", alt: "Coca-Cola bottles and can", name: "Cola", category: "Classic cola", note: "Original refreshment", color: "#d92831" },
   { src: "https://static.vecteezy.com/system/resources/previews/054/314/881/non_2x/fanta-bottles-and-can-free-png.png", alt: "Fanta bottles and can", name: "Orange soda", category: "Orange flavoured drink", note: "Fruity refreshment for every moment", color: "#f58220" },
   { src: "/sprite.png", alt: "Sprite bottles and can", name: "Lemon-lime soda", category: "Lemon-lime", note: "Crisp, clean refreshment", color: "#18a957" },
   { src: "/bisleri.png", alt: "Bisleri packaged drinking water bottles", name: "Packaged water", category: "Packaged water", note: "Pure everyday hydration", color: "#318bd6", wide: true },
-  { src: "https://static.vecteezy.com/system/resources/previews/054/314/865/non_2x/sprite-plastic-bottle-free-png.png", alt: "Fruit juice bottle", name: "Fruit juice", category: "Fruit flavoured", note: "Naturally bright refreshment", color: "#f4a01a" },
 ];
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -45,10 +49,11 @@ export default function Home() {
       productSlides.forEach((slide, index) => {
         const nextIndex = (index + 1) % productSlides.length;
         const nextSlide = productSlides[nextIndex];
+        const nextRotation = nextIndex === 0 ? 0 : nextIndex % 2 ? 2.5 : -2.5;
         productShowcase
-          .to(slide, { duration: 2.25 })
+          .to(slide, { autoAlpha: 1, duration: 2.25 })
           .to(slide, { autoAlpha: 0, y: -30, scale: 1.035, rotation: index % 2 ? 1.5 : -1.5, duration: 0.5, ease: "power2.in" })
-          .fromTo(nextSlide, { autoAlpha: 0, y: 110, scale: 0.9, rotation: nextIndex % 2 ? 2.5 : -2.5 }, { autoAlpha: 1, y: 0, scale: 1, rotation: 0, duration: 0.72, ease: "power3.out", onStart: () => setActiveProduct(nextIndex) }, "<0.18");
+          .fromTo(nextSlide, { autoAlpha: 0, y: 110, scale: 0.9, rotation: nextRotation }, { autoAlpha: 1, y: 0, scale: 1, rotation: 0, duration: 0.72, ease: "power3.out", onStart: () => setActiveProduct(nextIndex) });
       });
     }
 
@@ -179,14 +184,19 @@ export default function Home() {
     <section className="h-hero">
       <Pic name="hero-bg" className="h-hero-pic"><HeroScene /></Pic>
       <div className="container h-hero-copy">
-        <span className="h-eyebrow center">Beverage distribution &amp; supply chain</span>
+        <span className="h-eyebrow center"><Truck size={24} strokeWidth={2.2} />Beverage distribution &amp; supply chain</span>
         <h1>Moving Brands.<br /><em>Connecting Markets.</em></h1>
         <p>Reliable distribution, efficient supply chain and strong market presence for leading beverage brands across India.</p>
         <div className="h-btns"><Link to="/products" className="btn btn-primary">Explore Our Products <ArrowRight size={14} /></Link><Link to="/contact" className="btn btn-white">Business Enquiry <ArrowRight size={14} /></Link></div>
+        <div className="h-hero-trust" aria-label="Our strengths">
+          <div><ShieldCheck size={34} strokeWidth={1.8} /><span>Trusted<br />Distribution</span></div>
+          <div><Truck size={34} strokeWidth={1.8} /><span>Pan-India<br />Network</span></div>
+          <div><Handshake size={34} strokeWidth={1.8} /><span>Strong<br />Partnerships</span></div>
+        </div>
       </div>
       <div className="h-hero-product-reveal" aria-label="A rotating showcase of beverage varieties">
         {heroProducts.map((product, index) => (
-          <div className={`h-hero-product-slide${index === 0 ? " is-first" : ""}${product.wide ? " is-wide" : ""}${product.narrow ? " is-narrow" : ""}`} style={{ "--product-glow": product.color }} key={product.name}>
+          <div className={`h-hero-product-slide${index === 0 ? " is-first" : ""}${product.wide ? " is-wide" : ""}${product.narrow ? " is-narrow" : ""}${product.large ? " is-large" : ""}`} style={{ "--product-glow": product.color }} key={product.name}>
             <span className="h-product-glow" style={{ "--product-glow": product.color }} aria-hidden="true" />
             <div className="h-hero-product-frame">
               <img className="h-hero-product-image" src={product.src} alt={product.alt} />
@@ -245,7 +255,7 @@ export default function Home() {
         <div className="h-net-stats">{[[MapPin, "28+", "States Served"], [Handshake, "100+", "Distribution Partners"], [Warehouse, "15+", "Warehouse Locations"], [Store, "7", "Regional Offices"]].map(([I, v, l]) => <div key={l}><I size={26} strokeWidth={1.6} /><span><b>{v}</b><small>{l}</small></span></div>)}</div>
         <Link to="/network" className="btn btn-primary">Explore Our Network <ArrowRight size={14} /></Link>
       </div>
-      <div className="h-map"><img src={indiaOutline} alt="Map of India showing our distribution reach" /><svg className="h-map-routes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path className="h-map-route" d="M36 14 C38 20 38 22 38 22 S29 27 29 30 S43 28 48 29 S54 33 58 34 S53 40 38 44 S25 49 21 43 S25 56 24 58 S33 64 42 63 S39 72 38 77 S47 76 49 78" /><path className="h-map-route secondary" d="M38 22 C50 28 60 35 68 43 S67 49 63 52 S49 62 42 63" /></svg>{mapPins.map(([x, y, c], i) => <i key={i} className={`pin ${c}`} style={{ left: `${x}%`, top: `${y}%` }} />)}</div>
+      <div className="h-map"><img src={indiaOutline} alt="Map of India showing our distribution reach" /><svg className="h-map-routes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">{mapRouteGroups.map((route, index) => <polyline key={index} className={`h-map-route${index ? " secondary" : ""}`} points={route.map(pinIndex => mapPins[pinIndex].slice(0, 2).join(",")).join(" ")} />)}</svg>{mapPins.map(([x, y, c], i) => <i key={i} className={`pin ${c}`} style={{ left: `${x}%`, top: `${y}%` }} />)}</div>
       <div className="h-regions">{homeRegions.map(([r, d], i) => <div key={r}><MapPin size={18} className={i % 2 ? "b" : "r"} /><span><b>{r}</b><small>{d}</small></span></div>)}</div>
     </div></section>
 
