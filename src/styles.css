@@ -227,7 +227,7 @@ summary svg{flex:none;color:var(--or);transition:transform .2s}details[open] sum
 .btn-primary{background:var(--blue);box-shadow:0 8px 18px rgba(11,87,208,.25)}.btn-primary:hover{background:var(--blue-d)}
 .btn-white{background:#fff;color:var(--navy);border-color:#dfe6f5;box-shadow:0 4px 14px rgba(15,27,61,.08)}.btn-white:hover{border-color:var(--blue)}
 .btn-sm{padding:10px 16px;font-size:.8rem}
-.eyebrow{color:var(--red)}.text-link{color:var(--blue)}
+.eyebrow{color:var(--blue)}.text-link{color:var(--blue)}
 :focus-visible{outline-color:var(--blue)}
 
 /* header */
@@ -243,7 +243,7 @@ summary svg{flex:none;color:var(--or);transition:transform .2s}details[open] sum
 
 /* shared homepage atoms */
 .h-sec{padding:64px 0}.h-tight{padding-top:20px}
-.h-eyebrow{display:block;margin-bottom:12px;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+.h-eyebrow{display:block;margin-bottom:12px;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
 .h-eyebrow.center{text-align:center}.h-eyebrow.light{color:#ff6b78}
 .h-sec h2,.h-process h2{font-size:clamp(1.7rem,3vw,2.35rem);font-weight:800;color:var(--ink);letter-spacing:-.025em}
 .h-h2s{font-size:clamp(1.4rem,2.4vw,1.9rem)!important}
