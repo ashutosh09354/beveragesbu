@@ -147,8 +147,7 @@ export const segments = [
   ["HoReCa", "Hotels, restaurants, cafes and catering.", "horeca", "seg-horeca"],
   ["Institutions", "Schools, colleges, hospitals and corporate offices.", "inst", "seg-institutions"],
   ["Distributors", "Regional distributors and wholesalers.", "dist", "seg-distributors"],
-  ["Events & Venues", "Concerts, sports events, large gatherings.", "events", "seg-events"],
-  ["Rural & Semi-Urban", "Expanding reach to emerging markets.", "rural", "seg-rural"]
+  ["Events & Venues", "Concerts, sports events, large gatherings.", "events", "seg-events"]
 ];
 export const homeFaqs = [
   ["Which brands do you distribute?", "We distribute leading carbonated soft drinks, juices, packaged water, energy drinks and mixers. Contact us for the current brand list in your area."],

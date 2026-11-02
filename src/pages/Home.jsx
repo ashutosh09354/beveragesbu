@@ -7,8 +7,13 @@ import { ArrowRight, Check, Plus, IndianRupee, MapPinned, Handshake, Warehouse, 
 import PartnershipCTA from "../components/PartnershipCTA";
 import Bottle from "../components/Bottle";
 import { getProductImage } from "./Portfolio";
-import { Pic, HeroScene, WorkerArt, ForkliftArt, ConveyorArt, SegmentArt } from "../components/Scenes";
+import { Pic, WorkerArt, ForkliftArt, ConveyorArt, SegmentArt } from "../components/Scenes";
 import indiaOutline from "../assets/india-outline.svg";
+import retailSegmentImage from "../assets/photos/seg-retail.jpg";
+import horecaSegmentImage from "../assets/photos/seg-horeca.jpg";
+import institutionsSegmentImage from "../assets/photos/seg-institutions.jpg";
+import distributorsSegmentImage from "../assets/photos/seg-distributors.jpg";
+import eventsSegmentImage from "../assets/photos/seg-events.jpg";
 import { stats, popular, partnerBrands, aboutPoints, homeWhy, homeProcess, homeRegions, careList, segments, homeFaqs, mapPins } from "../data";
 
 const statIcons = [MapPinned, Handshake, Warehouse];
@@ -21,13 +26,18 @@ const mapRouteGroups = [
   [0, 1, 2, 3, 4, 7, 8, 11, 12, 13],
   [1, 6, 5, 9, 10, 11],
 ];
+const heroSlides = [
+  { src: "/herobg.png", alt: "Beverage distribution warehouse" },
+  { src: "/coldrink.png", alt: "Assorted cold drink brands" },
+  { src: "/coldrinkb.png", alt: "Beverage product collection" },
+];
 const heroProducts = [
+  { src: "/coldrink.png", alt: "Assorted cold drink brands", name: "Beverage range", category: "Leading beverage brands", note: "A range made for every market", color: "#0b57d0", collection: true },
   { src: "/cocaCola.png", alt: "Coca-Cola bottles and can", name: "Cola", category: "Classic cola", note: "Original refreshment", color: "#d92831" },
-  { src: "https://static.vecteezy.com/system/resources/previews/054/314/881/non_2x/fanta-bottles-and-can-free-png.png", alt: "Fanta bottles and can", name: "Orange soda", category: "Orange flavoured drink", note: "Fruity refreshment for every moment", color: "#f58220" },
+  { src: "/fruitJuice.png", alt: "Fruit beverage bottle", name: "Fruit beverage", category: "Fruit refreshment", note: "Bright flavour for every occasion", color: "#f58220" },
   { src: "/sprite.png", alt: "Sprite bottles and can", name: "Lemon-lime soda", category: "Lemon-lime", note: "Crisp, clean refreshment", color: "#18a957" },
   { src: "/bisleri.png", alt: "Bisleri packaged drinking water bottles", name: "Packaged water", category: "Packaged water", note: "Pure everyday hydration", color: "#318bd6", wide: true },
 ];
-
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function Home() {
@@ -37,36 +47,53 @@ export default function Home() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) return;
 
-    // The product reveal is independent from the road and truck loops below.
+    const backgroundSlides = gsap.utils.toArray(".h-hero-slide");
+    if (backgroundSlides.length > 1) {
+      const setActiveHeroSlide = (index) => {
+        backgroundSlides.forEach((slide, slideIndex) => slide.classList.toggle("is-active", slideIndex === index));
+        homeRef.current?.classList.toggle("has-hero-copy", index === 0);
+      };
+      setActiveHeroSlide(0);
+      gsap.set(backgroundSlides.slice(1), { autoAlpha: 0 });
+      const heroSlider = gsap.timeline({ repeat: -1, repeatDelay: 0.2 });
+      backgroundSlides.forEach((slide, index) => {
+        const nextIndex = (index + 1) % backgroundSlides.length;
+        const nextSlide = backgroundSlides[nextIndex];
+        heroSlider
+          .to({}, { duration: 4.5 })
+          .to(slide, { autoAlpha: 0, scale: 1.03, duration: 0.85, ease: "power2.inOut" })
+          .fromTo(nextSlide, { autoAlpha: 0, scale: 1 }, { autoAlpha: 1, scale: 1.015, duration: 0.85, ease: "power2.inOut", onStart: () => setActiveHeroSlide(nextIndex) }, "<");
+      });
+    }
+
     const productSlides = gsap.utils.toArray(".h-hero-product-slide");
     const productDots = gsap.utils.toArray(".h-product-dot");
     const setActiveProduct = (index) => productDots.forEach((dot, dotIndex) => dot.classList.toggle("is-active", dotIndex === index));
     if (productSlides.length > 1) {
-      gsap.set(productSlides, { autoAlpha: 0, y: 120, scale: 0.9, rotation: -3 });
-      gsap.set(productSlides[0], { autoAlpha: 1, y: 0, scale: 1, rotation: 0 });
+      gsap.set(productSlides, { autoAlpha: 0, y: 90, scale: 0.92 });
+      gsap.set(productSlides[0], { autoAlpha: 1, y: 0, scale: 1 });
       setActiveProduct(0);
-      const productShowcase = gsap.timeline({ repeat: -1 });
+      const productShowcase = gsap.timeline({ repeat: -1, repeatDelay: 0.1 });
       productSlides.forEach((slide, index) => {
         const nextIndex = (index + 1) % productSlides.length;
-        const nextSlide = productSlides[nextIndex];
-        const nextRotation = nextIndex === 0 ? 0 : nextIndex % 2 ? 2.5 : -2.5;
         productShowcase
-          .to(slide, { autoAlpha: 1, duration: 2.25 })
-          .to(slide, { autoAlpha: 0, y: -30, scale: 1.035, rotation: index % 2 ? 1.5 : -1.5, duration: 0.5, ease: "power2.in" })
-          .fromTo(nextSlide, { autoAlpha: 0, y: 110, scale: 0.9, rotation: nextRotation }, { autoAlpha: 1, y: 0, scale: 1, rotation: 0, duration: 0.72, ease: "power3.out", onStart: () => setActiveProduct(nextIndex) });
+          .to(slide, { autoAlpha: 1, duration: 2.4 })
+          .to(slide, { autoAlpha: 0, y: -24, scale: 1.02, duration: 0.48, ease: "power2.in" })
+          .fromTo(productSlides[nextIndex], { autoAlpha: 0, y: 88, scale: 0.92 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out", onStart: () => setActiveProduct(nextIndex) });
       });
     }
 
-    // Continuous, opposing truck loops turn the hero into a living distribution scene.
-    // They use SVG transforms (not layout changes) to keep the animation smooth.
-    gsap.fromTo(".h-truck-left",
-      { x: -460 },
-      { x: () => window.innerWidth + 500, duration: 19, ease: "none", repeat: -1, repeatDelay: 0.15, repeatRefresh: true }
-    );
-    gsap.fromTo(".h-truck-right",
-      { x: () => window.innerWidth + 500 },
-      { x: -460, duration: 23, ease: "none", repeat: -1, repeatDelay: 0.7, repeatRefresh: true }
-    );
+    const scrollTrack = homeRef.current?.querySelector(".h-scroll-truck-track");
+    const scrollTruck = homeRef.current?.querySelector(".h-scroll-truck-vehicle");
+    const scrollIndicator = scrollTrack && scrollTruck ? ScrollTrigger.create({
+      trigger: homeRef.current,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => gsap.set(scrollTruck, {
+        y: self.progress * Math.max(0, scrollTrack.clientHeight - scrollTruck.clientHeight),
+      }),
+    }) : null;
+
     gsap.to(".h-hero-clouds .h-cloud-one", { x: 48, duration: 18, ease: "sine.inOut", repeat: -1, yoyo: true });
     gsap.to(".h-hero-clouds .h-cloud-two", { x: -38, duration: 22, ease: "sine.inOut", repeat: -1, yoyo: true });
     gsap.fromTo(".h-road-streaks", { x: -60, autoAlpha: 0.35 }, { x: 90, autoAlpha: 0.85, duration: 1.8, ease: "none", repeat: -1, yoyo: true });
@@ -76,44 +103,12 @@ export default function Home() {
       const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
       intro
         .from(".h-hero-copy .h-eyebrow", { y: 18, autoAlpha: 0, duration: 0.55 })
-        .from(".h-hero h1", { y: 34, autoAlpha: 0, duration: 0.8 }, "-=0.25")
+        .from(".h-hero-title-line", { y: 34, autoAlpha: 0, stagger: 0.12, duration: 0.72 }, "-=0.25")
         .from(".h-hero-copy > p", { y: 18, autoAlpha: 0, duration: 0.6 }, "-=0.42")
         .from(".h-btns .btn", { y: 14, autoAlpha: 0, stagger: 0.12, duration: 0.5 }, "-=0.3")
-        .from(".h-hero-product-reveal", { y: 70, scale: 0.92, autoAlpha: 0, duration: 1.05 }, "-=0.25");
+        .from(".h-hero-trust > div", { y: 14, autoAlpha: 0, stagger: 0.09, duration: 0.48 }, "-=0.2")
+        .from(".h-hero-product-reveal", { y: 50, scale: 0.94, autoAlpha: 0, duration: 0.8 }, "-=0.35");
 
-      gsap.to(".h-hero-product-reveal", {
-        y: -12,
-        duration: 2.8,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-      });
-      gsap.to(".h-hero-product-reveal", {
-        yPercent: -8,
-        ease: "none",
-        scrollTrigger: { trigger: ".h-hero", start: "top top", end: "bottom top", scrub: 0.8 },
-      });
-
-      gsap.from(".h-stats > div", {
-        y: 24, autoAlpha: 0, stagger: 0.12, duration: 0.65, ease: "power2.out",
-        scrollTrigger: { trigger: ".h-stats", start: "top 88%", once: true },
-      });
-      gsap.utils.toArray(".h-stats b, .h-net-stats b").forEach((el) => {
-        const label = el.textContent.trim();
-        const match = label.match(/^(\d+)(.*)$/);
-        if (!match) return;
-        const target = Number(match[1]);
-        const suffix = match[2];
-        const counter = { value: 0 };
-        gsap.to(counter, {
-          value: target,
-          duration: 1.25,
-          ease: "power1.out",
-          snap: { value: 1 },
-          onUpdate: () => { el.textContent = `${Math.round(counter.value)}${suffix}`; },
-          scrollTrigger: { trigger: el, start: "top 90%", once: true },
-        });
-      });
       gsap.from(".h-about > div:first-child > *", {
         y: 22, autoAlpha: 0, stagger: 0.08, duration: 0.65, ease: "power2.out",
         scrollTrigger: { trigger: ".h-about", start: "top 78%", once: true },
@@ -177,15 +172,20 @@ export default function Home() {
       });
     });
 
-    return () => mm.revert();
+    return () => { scrollIndicator?.kill(); mm.revert(); };
   }, { scope: homeRef });
 
-  return <div ref={homeRef} className="home-motion-root">
+  return <div ref={homeRef} className="home-motion-root has-hero-copy">
+    <aside className="h-scroll-truck" aria-hidden="true">
+      <div className="h-scroll-truck-track"><span className="h-scroll-truck-vehicle"><Truck size={18} strokeWidth={2} /></span></div>
+    </aside>
     <section className="h-hero">
-      <Pic name="hero-bg" className="h-hero-pic"><HeroScene /></Pic>
+      <div className="h-hero-slider" aria-label="Beverage distribution highlights">
+        {heroSlides.map((slide, index) => <img key={slide.src} className={`h-hero-slide${index === 0 ? " is-active" : ""}`} src={slide.src} alt={slide.alt} />)}
+      </div>
       <div className="container h-hero-copy">
         <span className="h-eyebrow center"><Truck size={24} strokeWidth={2.2} />Beverage distribution &amp; supply chain</span>
-        <h1>Moving Brands.<br /><em>Connecting Markets.</em></h1>
+        <h1><span className="h-hero-title-line">Moving Brands.</span><em className="h-hero-title-line">Connecting Markets.</em></h1>
         <p>Reliable distribution, efficient supply chain and strong market presence for leading beverage brands across India.</p>
         <div className="h-btns"><Link to="/products" className="btn btn-primary">Explore Our Products <ArrowRight size={14} /></Link><Link to="/contact" className="btn btn-white">Business Enquiry <ArrowRight size={14} /></Link></div>
         <div className="h-hero-trust" aria-label="Our strengths">
@@ -194,9 +194,9 @@ export default function Home() {
           <div><Handshake size={34} strokeWidth={1.8} /><span>Strong<br />Partnerships</span></div>
         </div>
       </div>
-      <div className="h-hero-product-reveal" aria-label="A rotating showcase of beverage varieties">
+      {false && <div className="h-hero-product-reveal" aria-label="A rotating showcase of beverage varieties">
         {heroProducts.map((product, index) => (
-          <div className={`h-hero-product-slide${index === 0 ? " is-first" : ""}${product.wide ? " is-wide" : ""}${product.narrow ? " is-narrow" : ""}${product.large ? " is-large" : ""}`} style={{ "--product-glow": product.color }} key={product.name}>
+          <div className={`h-hero-product-slide${index === 0 ? " is-first" : ""}${product.wide ? " is-wide" : ""}${product.collection ? " is-collection" : ""}${product.narrow ? " is-narrow" : ""}${product.large ? " is-large" : ""}`} style={{ "--product-glow": product.color }} key={product.name}>
             <span className="h-product-glow" style={{ "--product-glow": product.color }} aria-hidden="true" />
             <div className="h-hero-product-frame">
               <img className="h-hero-product-image" src={product.src} alt={product.alt} />
@@ -207,7 +207,7 @@ export default function Home() {
         ))}
         <div className="h-product-selectors" aria-label="Featured beverage selector">{heroProducts.map((product, index) => <span key={product.name} className={`h-product-dot${index === 0 ? " is-active" : ""}`} aria-hidden="true" />)}</div>
         <span className="h-product-stage-label"><i /> Beverage range <b>01 — 06</b></span>
-      </div>
+      </div>}
     </section>
 
     <div className="container"><div className="h-stats">{statLabels.map(([v, l, s], i) => { const I = statIcons[i]; return <div key={l}><I size={34} strokeWidth={1.5} /><span><b>{v}</b><small>{l}{s && <><br />{s}</>}</small></span></div>; })}</div></div>
@@ -268,7 +268,7 @@ export default function Home() {
 
     <section className="h-sec h-tight"><div className="container">
       <div className="h-head-row slim"><div><span className="h-eyebrow">Supply that fits every channel</span><h2 className="h-h2s">Serving every market segment</h2><p className="h-lead">We cater to a wide range of customers, ensuring the right product reaches the right market.</p></div><Link to="/operations" className="h-link">Explore Our Operations <ArrowRight size={14} /></Link></div>
-      <div className="h-segs">{segments.map(([t, d, k, p]) => <div className="h-seg" key={t}><Pic name={p} className="h-seg-pic"><SegmentArt kind={k} /></Pic><b>{t}</b><small>{d}</small></div>)}</div>
+      <div className="h-segs">{segments.map(([t, d, k, p]) => <div className="h-seg" key={t}>{k === "retail" ? <img className="pic h-seg-pic" src={retailSegmentImage} alt="Beverages displayed in a retail store" loading="lazy" /> : k === "horeca" ? <img className="pic h-seg-pic" src={horecaSegmentImage} alt="Hotel facade" loading="lazy" /> : k === "inst" ? <img className="pic h-seg-pic" src={institutionsSegmentImage} alt="Institutional building" loading="lazy" /> : k === "dist" ? <img className="pic h-seg-pic" src={distributorsSegmentImage} alt="Beverage distribution" loading="lazy" /> : k === "events" ? <img className="pic h-seg-pic" src={eventsSegmentImage} alt="Event venue" loading="lazy" /> : <Pic name={p} className="h-seg-pic"><SegmentArt kind={k} /></Pic>}<b>{t}</b><small>{d}</small></div>)}</div>
     </div></section>
 
     <section className="h-sec h-tight"><div className="container h-faq">
